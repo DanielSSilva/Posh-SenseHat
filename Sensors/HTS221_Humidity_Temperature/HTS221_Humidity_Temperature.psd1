@@ -51,7 +51,7 @@ Copyright = '(c) daniel. All rights reserved.'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
- RequiredModules = @(Microsoft.PowerShell.IoT)
+ RequiredModules = @('Microsoft.PowerShell.IoT')
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
