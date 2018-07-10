@@ -27,7 +27,6 @@ $controlRegisterAddress = 0x20
 $controlRegisterValue = 0x84
 Set-I2CRegister -Device $Device -Register $controlRegisterAddress -Data $controlRegisterValue
 
-
 function CheckIfDataExists () {
 	$checkIfNewDataRegisterAddress = 0x27
 	(Get-I2CRegister -Device $Device -Register $checkIfNewDataRegisterAddress).Data
@@ -100,7 +99,7 @@ function Get-CurrentTemperature(){
 	[int16]$T1_DegC = (Get-T1_degC_x8)/8
 	$calcTemperature = ( ($T_OUT - $T0_DegC)*($T1_DegC - $T0_DegC) / ($T1_OUT - $T0_OUT)) + $T0_DegC
 	$temperature = [math]::Round($calcTemperature)
-	"Current temperature is $($temperature)ºC "
+	$temperature
 }
 
 # Export only the functions using PowerShell standard verb-noun naming.
