@@ -20,7 +20,7 @@ Function WritebyteArrayToMatrix {
 
 Function ConvertToByteArray{ 
     param(
-        [Int16[]]$source
+        [UInt16[]]$source
     )
 
     [byte[]]$arrayAsByte = New-Object -TypeName Byte[] -ArgumentList ($source.Length * 2)
@@ -32,20 +32,9 @@ Function ConvertToByteArray{
 #####
 # Public functions
 
-Function ConvertFrom-Hex {
-    Param(
-        [String]$Value
-    )
-    New-Object -TypeName psobject -Property @{
-        'bin' = ([Convert]::ToString((Invoke-Expression "0x$Value"),2)).PadLeft(16, "0")
-        'Int' = Invoke-Expression "0x$Value"
-        'Hex' = $Value
-    }
-}
-
 Function Set-MatrixWithRainbow {
-    $Color = [Int]32768
-    [Int[]]$PixelList = $Color
+    $Color = [UInt16]32768
+    [UInt16[]]$PixelList = $Color
     1..15 | foreach {
         $PixelList += $Color -bor ($Color -shr 1)
         $Color = $PixelList[-1]
@@ -55,7 +44,7 @@ Function Set-MatrixWithRainbow {
         $Color = $PixelList[-1]
     }
     
-    [Int[]]$PixelList += $PixelList[($PixelList.Length -1)..0]
+    [UInt16[]]$PixelList += $PixelList[($PixelList.Length -1)..0]
     
     $PixelListByte = ConvertToByteArray -source $PixelList
     WritebyteArrayToMatrix -PixelList $PixelListByte
@@ -69,7 +58,7 @@ Function Set-MatrixWithSingleColor {
             Position = 0
         )]
         [ValidateRange(0,31)]
-        [Int]$Red,
+        [UInt16]$Red,
 
         [Parameter(Mandatory = $true, 
             ValueFromPipeline = $true, 
@@ -77,7 +66,7 @@ Function Set-MatrixWithSingleColor {
             Position = 0
         )]
         [ValidateRange(0,63)]
-        [Int]$Green,
+        [UInt16]$Green,
 
         [Parameter(Mandatory = $true, 
             ValueFromPipeline = $true, 
@@ -85,7 +74,7 @@ Function Set-MatrixWithSingleColor {
             Position = 0
         )]
         [ValidateRange(0,31)]
-        [Int]$Blue
+        [UInt16]$Blue
     )
 
     Begin {
@@ -94,13 +83,12 @@ Function Set-MatrixWithSingleColor {
 
     Process {
         for ($I = 0 ; $I -lt 64 ; $I++ ) {
-            [Int[]]$PixelListInt += [Int]( ([Int]$Red -shl 11) -bor ([Int]$Green -shl 5) -bor ([Int]$Blue) )
+            [UInt16[]]$PixelListInt += [UInt16]( ([UInt16]$Red -shl 11) -bor ([UInt16]$Green -shl 5) -bor ([UInt16]$Blue) )
         }
 
         Try {
             $PixelListByte = ConvertToByteArray -source $PixelListInt
-            $PixelListInt
-            #WritebyteArrayToMatrix -PixelList $PixelListByte
+            WritebyteArrayToMatrix -PixelList $PixelListByte
         }
         catch {
             Write-Error 'Failed to write output to screen.'
