@@ -20,7 +20,7 @@ Function WritebyteArrayToMatrix {
 
 Function ConvertToByteArray{ 
     param(
-        [Int[]]$source
+        [Int16[]]$source
     )
 
     [byte[]]$arrayAsByte = New-Object -TypeName Byte[] -ArgumentList ($source.Length * 2)
@@ -31,6 +31,35 @@ Function ConvertToByteArray{
 
 #####
 # Public functions
+
+Function ConvertFrom-Hex {
+    Param(
+        [String]$Value
+    )
+    New-Object -TypeName psobject -Property @{
+        'bin' = ([Convert]::ToString((Invoke-Expression "0x$Value"),2)).PadLeft(16, "0")
+        'Int' = Invoke-Expression "0x$Value"
+        'Hex' = $Value
+    }
+}
+
+Function Set-MatrixWithRainbow {
+    $Color = [Int]32768
+    [Int[]]$PixelList = $Color
+    1..15 | foreach {
+        $PixelList += $Color -bor ($Color -shr 1)
+        $Color = $PixelList[-1]
+    }
+    1..16 | foreach {
+        $PixelList += $Color -shr 1
+        $Color = $PixelList[-1]
+    }
+    
+    [Int[]]$PixelList += $PixelList[($PixelList.Length -1)..0]
+    
+    $PixelListByte = ConvertToByteArray -source $PixelList
+    WritebyteArrayToMatrix -PixelList $PixelListByte
+}
 
 Function Set-MatrixWithSingleColor { 
     Param(
@@ -70,7 +99,8 @@ Function Set-MatrixWithSingleColor {
 
         Try {
             $PixelListByte = ConvertToByteArray -source $PixelListInt
-            WritebyteArrayToMatrix -PixelList $PixelListByte
+            $PixelListInt
+            #WritebyteArrayToMatrix -PixelList $PixelListByte
         }
         catch {
             Write-Error 'Failed to write output to screen.'
