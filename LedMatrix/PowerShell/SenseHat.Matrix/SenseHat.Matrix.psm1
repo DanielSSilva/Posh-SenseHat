@@ -185,17 +185,21 @@ Function Write-SenseHatMatrix {
         [String]$Font = 'cherry-10-b',
         [UInt16]$BackgroundColor = 0,
         [UInt16]$ForegroundColor = 63488,
-        [Int]$TextSpeed = 1
+        [Int]$TextSpeed = 1,
+        [Int]$Loop = 1
     )
 
     $FontCache = GetAvailableFonts | Where-Object -Property Name -eq $Font | ParseBitmapFont
     $Pages = ConvertTextToByteArray -Text $Text -BitmapFont $FontCache -ForeGroundColor $ForegroundColor -BackGroundColor $BackgroundColor
-
-    foreach ($Page in $Pages) {
-        $ByteArray = ConvertToByteArray -source $Page
-        WritebyteArrayToMatrix -PixelList $ByteArray
-        Start-Sleep -Seconds $TextSpeed
-    }    
+    
+    1..$Loop | Foreach { 
+        foreach ($Page in $Pages) {
+            $ByteArray = ConvertToByteArray -source $Page
+            WritebyteArrayToMatrix -PixelList $ByteArray
+            Start-Sleep -Seconds $TextSpeed
+        }
+    }
+    Set-MatrixWithSingleColor -Red 0 -Green 0 -Blue 0    
 }
 
 
