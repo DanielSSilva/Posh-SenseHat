@@ -29,6 +29,86 @@ Function ConvertToByteArray{
     $arrayAsByte
 }
 
+unction GetAvailableFonts {
+    Param(
+        [String]$SearchPath = "$PSScriptRoot\Fonts"
+    )
+    Get-ChildItem $SearchPath\*.bdf -ErrorAction SilentlyContinue | foreach {
+        New-Object -TypeName psobject -Property @{
+            'Name' = $_.BaseName
+            'FontPath' = $_.FullName
+        }
+    }
+}
+
+Function ParseBitmapFont {
+    Param(
+        [Parameter(Mandatory=$True,
+                   ValueFromPipelineByPropertyName=$true
+        )]
+        [String]$FontPath
+    )
+
+    $FileContent = Get-Content $FontPath
+    $PropertyLastLine = $FileContent | select-string STARTCHAR | select-Object -first 1 -ExpandProperty LineNumber
+
+    $FontProperty = @{}
+    $FileContent[0..$PropertyLastLine] | ConvertFrom-String -PropertyNames 'key','value' | foreach { $FontProperty.($_.Key) = $_.value}
+    
+    $Char = @{}
+    $CharLineNumbers = $FileContent | Select-String "ENCODING" | Select-Object -ExpandProperty LineNumber | Where {$_ -gt $PropertyLastLine}
+    
+    Foreach ($StartLine in $CharLineNumbers) {
+        $LineContent,$LineInt = $FileContent[($StartLine -1)] -split ' ' 
+        IF (([int]$LineInt -ge 32) -and ([int]$LineInt -le 126)) {
+            $CurrentChar = [char][int]$lineint
+            do {
+                $StartLine++
+            } 
+            until ($FileContent[$StartLine] -like "BITMAP")
+            $EndLine = $StartLine
+            do {
+                $EndLine++
+            } 
+            until ($FileContent[$EndLine] -like "ENDCHAR")
+            $CurrentCharLayout = $FileContent[($StartLine + 1)..($EndLine - 1)] -join ','
+            
+            $Char.Add($CurrentChar,$CurrentCharLayout)
+        }
+    }
+
+    $Char
+}
+
+Function ConvertTextToByteArray {
+    Param(
+        [string]$Text,
+        [hashtable]$BitmapFont,
+        [UInt16]$ForeGroundColor,
+        [UInt16]$BackGroundColor
+    )
+
+    $Return = [System.Collections.ArrayList]::new()
+    $CharArray = $Text.ToCharArray()
+    foreach ($Char in $CharArray) {
+        $Hex = ($BitmapFont.$char -split ',')[1..8]
+        $ByteArray = $Hex | foreach {
+            $ThisBin = [Convert]::ToString((Invoke-Expression "0x$_"),2).PadLeft(8, "0")
+            $ThisBin[0..7] | foreach {
+                Switch ($_) {
+                    "0" { [UInt16]"$BackGroundColor" }
+                    "1" { [UInt16]"$ForeGroundColor" }
+                }
+                
+            }
+        }
+        
+        $Null = $return.Add($ByteArray)
+    }
+
+    $return
+}
+
 #####
 # Public functions
 
@@ -95,6 +175,29 @@ Function Set-MatrixWithSingleColor {
         }
     }
 }
+
+Function Write-SenseHatMatrix {
+    Param(
+        [Parameter(Mandatory=$True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$Text,
+
+        [String]$Font = 'cherry-10-b',
+        [UInt16]$BackgroundColor = 0,
+        [UInt16]$ForegroundColor = 63488,
+        [Int]$TextSpeed
+    )
+
+    $FontCache = GetAvailableFonts -SearchPath 'C:\GITHUB\Posh-SenseHat\LedMatrix\PowerShell\SenseHat.Matrix\fonts' | Where-Object -Property Name -eq $Font | ParseBitmapFont
+    $Pages = ConvertTextToByteArray -Text $Text -BitmapFont $FontCache -ForeGroundColor $ForegroundColor -BackGroundColor $BackgroundColor
+
+    foreach ($Page in $Pages) {
+        WritebyteArrayToMatrix -PixelList $Page
+        Start-Sleep -Seconds $TextSpeed
+    }
+    
+}
+
 
 
 # Export only the functions using PowerShell standard verb-noun naming.
