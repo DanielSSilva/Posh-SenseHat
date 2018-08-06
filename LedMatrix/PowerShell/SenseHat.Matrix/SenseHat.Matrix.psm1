@@ -188,14 +188,15 @@ Function Write-SenseHatMatrix {
         [Int]$TextSpeed
     )
 
-    $FontCache = GetAvailableFonts | Where-Object -Property Name -eq $Font | ParseBitmapFont
+    $FontCache = GetAvailableFonts -SearchPath ./SenseHat.Matrix/fonts | Where-Object -Property Name -eq $Font | ParseBitmapFont
     $Pages = ConvertTextToByteArray -Text $Text -BitmapFont $FontCache -ForeGroundColor $ForegroundColor -BackGroundColor $BackgroundColor
 
+    $Pages
     foreach ($Page in $Pages) {
-        WritebyteArrayToMatrix -PixelList $Page
+        $ByteArray = ConvertToByteArray -source $Page
+        WritebyteArrayToMatrix -PixelList $ByteArray
         Start-Sleep -Seconds $TextSpeed
-    }
-    
+    }    
 }
 
 
