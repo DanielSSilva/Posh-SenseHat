@@ -31,7 +31,7 @@ Function ConvertToByteArray{
 
 Function GetAvailableFonts {
     Param(
-        [String]$SearchPath = "$PSScriptRoot\Fonts"
+        [String]$SearchPath = "$PSScriptRoot\fonts"
     )
     Get-ChildItem $SearchPath\*.bdf -ErrorAction SilentlyContinue | foreach {
         New-Object -TypeName psobject -Property @{
