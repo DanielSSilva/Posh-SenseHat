@@ -188,7 +188,7 @@ Function Write-SenseHatMatrix {
         [Int]$TextSpeed
     )
 
-    $FontCache = GetAvailableFonts -SearchPath 'C:\GITHUB\Posh-SenseHat\LedMatrix\PowerShell\SenseHat.Matrix\fonts' | Where-Object -Property Name -eq $Font | ParseBitmapFont
+    $FontCache = GetAvailableFonts | Where-Object -Property Name -eq $Font | ParseBitmapFont
     $Pages = ConvertTextToByteArray -Text $Text -BitmapFont $FontCache -ForeGroundColor $ForegroundColor -BackGroundColor $BackgroundColor
 
     foreach ($Page in $Pages) {
