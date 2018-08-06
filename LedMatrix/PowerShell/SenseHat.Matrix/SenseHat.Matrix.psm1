@@ -202,7 +202,43 @@ Function Write-SenseHatMatrix {
     Set-MatrixWithSingleColor -Red 0 -Green 0 -Blue 0    
 }
 
+Function Get-RGB565Color {
+    param(
+        [Parameter(Mandatory=$True)]
+        [ValidateSet('Red','Green','Blue','Yellow','Orange','Purple','Pink','LightBlue','LightRed','LightGreen','LightYellow','DarkBlue','DarkRed','DarkGreen','DarkYellow','grey','white','black','darkpink','DarkOrange')]
+        [string]$Color
+    )
 
+    Switch ($Color) {
+        'Red'         {$Red = 31; $Green = 0; $Blue = 0}
+        'Green'       {$Red = 0; $Green = 63; $Blue = 0}
+        'Blue'        {$Red = 0; $Green = 0; $Blue = 31}
+        'Yellow'      {$Red = 31; $Green = 63; $Blue = 0}
+        'Orange'      {$Red = 31; $Green = 32; $Blue = 8}
+        'Purple'      {$Red = 16; $Green = 0; $Blue = 31}
+        'Pink'        {$Red = 31; $Green = 0; $Blue = 31}
+        'LightBlue'   {$Red = 0; $Green = 63; $Blue = 31}
+        'LightRed'    {$Red = 31; $Green = 32; $Blue = 16}
+        'LightGreen'  {$Red = 16; $Green = 63; $Blue = 16}
+        'LightYellow' {$Red = 31; $Green = 63; $Blue = 16}
+        'DarkBlue'    {$Red = 0; $Green = 0; $Blue = 16}
+        'DarkRed'     {$Red = 16; $Green = 0; $Blue = 0}
+        'DarkGreen'   {$Red = 0; $Green = 16; $Blue = 0}
+        'DarkYellow'  {$Red = 16; $Green = 32; $Blue = 0}
+        'grey'        {$Red = 24; $Green = 48; $Blue = 24}
+        'white'       {$Red = 31; $Green = 63; $Blue = 31}
+        'black'       {$Red = 0; $Green = 0; $Blue = 0}
+        'darkpink'    {$Red = 16; $Green = 0; $Blue = 8}
+        'DarkOrange'  {$Red = 26; $Green = 26; $Blue = 0}
+    }
+    
+    
+    New-Object -TypeName psobject -Property @{
+        'Red' = $Red
+        'green' = $green
+        'blue' = $blue
+    }
+}
 
 # Export only the functions using PowerShell standard verb-noun naming.
 # Be sure to list each exported functions in the FunctionsToExport field of the module manifest file.
