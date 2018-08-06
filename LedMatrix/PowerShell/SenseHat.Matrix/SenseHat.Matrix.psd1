@@ -69,7 +69,7 @@ RequiredModules = @('Microsoft.PowerShell.IoT')
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Set-MatrixWithSingleColor','Set-MatrixWithRainbow','Write-SenseHatMatrix','Get-AvailableFonts','Parse-BitmapFont','Convert-TextToByteArray'
+FunctionsToExport = 'Set-MatrixWithSingleColor','Set-MatrixWithRainbow','Write-SenseHatMatrix'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'

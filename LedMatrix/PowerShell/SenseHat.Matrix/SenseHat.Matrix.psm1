@@ -29,7 +29,7 @@ Function ConvertToByteArray{
     $arrayAsByte
 }
 
-Function Get-AvailableFonts {
+Function GetAvailableFonts {
     Param(
         [String]$SearchPath = "$PSScriptRoot\fonts"
     )
@@ -41,7 +41,7 @@ Function Get-AvailableFonts {
     }
 }
 
-Function Parse-BitmapFont {
+Function ParseBitmapFont {
     Param(
         [Parameter(Mandatory=$True,
                    ValueFromPipelineByPropertyName=$true
@@ -80,7 +80,7 @@ Function Parse-BitmapFont {
     $Char
 }
 
-Function Convert-TextToByteArray {
+Function ConvertTextToByteArray {
     Param(
         [string]$Text,
         [hashtable]$BitmapFont,
@@ -185,13 +185,12 @@ Function Write-SenseHatMatrix {
         [String]$Font = 'cherry-10-b',
         [UInt16]$BackgroundColor = 0,
         [UInt16]$ForegroundColor = 63488,
-        [Int]$TextSpeed
+        [Int]$TextSpeed = 1
     )
 
-    $FontCache = GetAvailableFonts -SearchPath ./SenseHat.Matrix/fonts | Where-Object -Property Name -eq $Font | ParseBitmapFont
+    $FontCache = GetAvailableFonts | Where-Object -Property Name -eq $Font | ParseBitmapFont
     $Pages = ConvertTextToByteArray -Text $Text -BitmapFont $FontCache -ForeGroundColor $ForegroundColor -BackGroundColor $BackgroundColor
 
-    $Pages
     foreach ($Page in $Pages) {
         $ByteArray = ConvertToByteArray -source $Page
         WritebyteArrayToMatrix -PixelList $ByteArray
