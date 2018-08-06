@@ -29,7 +29,7 @@ Function ConvertToByteArray{
     $arrayAsByte
 }
 
-Function GetAvailableFonts {
+Function Get-AvailableFonts {
     Param(
         [String]$SearchPath = "$PSScriptRoot\fonts"
     )
@@ -41,7 +41,7 @@ Function GetAvailableFonts {
     }
 }
 
-Function ParseBitmapFont {
+Function Parse-BitmapFont {
     Param(
         [Parameter(Mandatory=$True,
                    ValueFromPipelineByPropertyName=$true
@@ -80,7 +80,7 @@ Function ParseBitmapFont {
     $Char
 }
 
-Function ConvertTextToByteArray {
+Function Convert-TextToByteArray {
     Param(
         [string]$Text,
         [hashtable]$BitmapFont,
