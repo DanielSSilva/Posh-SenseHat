@@ -53,7 +53,7 @@ Function ParseBitmapFont {
     $PropertyLastLine = $FileContent | select-string STARTCHAR | select-Object -first 1 -ExpandProperty LineNumber
 
     $FontProperty = @{}
-    $FileContent[0..$PropertyLastLine] | ConvertFrom-String -PropertyNames 'key','value' | foreach { $FontProperty.($_.Key) = $_.value}
+    $FileContent[0..$PropertyLastLine] -replace ' ','=' | Where-Object {$_ -like "*=*" } | ConvertFrom-StringData | foreach { $FontProperty.($_.Name) = $_.value}
     
     $Char = @{}
     $CharLineNumbers = $FileContent | Select-String "ENCODING" | Select-Object -ExpandProperty LineNumber | Where {$_ -gt $PropertyLastLine}
