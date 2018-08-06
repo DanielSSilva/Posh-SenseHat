@@ -29,7 +29,7 @@ Function ConvertToByteArray{
     $arrayAsByte
 }
 
-unction GetAvailableFonts {
+Function GetAvailableFonts {
     Param(
         [String]$SearchPath = "$PSScriptRoot\Fonts"
     )
