@@ -1,7 +1,7 @@
 ﻿#####
 # Private functions
 
-Function WritebyteArrayToMatrix {
+Function WriteByteArrayToMatrix {
     Param(
         [Parameter(Mandatory = $true)]
         [Byte[]]$PixelList
