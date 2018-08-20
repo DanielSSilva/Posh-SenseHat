@@ -22,7 +22,7 @@ Function GetSenseHatJoystick {
 #####
 # Public functions
 
-Function Get-SenseHatJoysticButton {
+Function Get-SenseHatJoystickButton {
     $Joystick = GetSenseHatJoystick
     
     $Button = Get-Content -AsByteStream -Path $joystick -TotalCount 11
