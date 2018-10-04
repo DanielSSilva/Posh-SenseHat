@@ -8,7 +8,7 @@ $IndexValue = 15
 Set-MatrixWithSingleColor -Red $IndexValue -Green 0 -Blue 0
 
 While ($true){
-    $ButtonClicked = Get-SenseHatJoysticButton
+    $ButtonClicked = Get-SenseHatJoystickButton
     Switch ($ButtonClicked) {
         'up' { 
             $IndexValue++ 
