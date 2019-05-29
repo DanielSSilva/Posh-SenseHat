@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+   <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
+   <ItemGroup>
+    <PackageReference Include="System.Device.Gpio" Version="0.1.0-prerelease.19078.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Emmellsoft.IoT.RPi.SenseHat">
+      <HintPath>.\SenseHatCSharpDlls\RPi.SenseHat.dll</HintPath>
+    </Reference>
+    <Reference Include="RTIMULibCS">
+      <HintPath>.\SenseHatCSharpDlls\RTIMULibCS.dll</HintPath>
+    </Reference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+</Project>

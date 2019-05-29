@@ -1,9 +1,0 @@
-/home/daniel/Documents/RPI/SenseHat/Posh-SenseHat/LedMatrix/obj/Debug/netcoreapp2.0/LedMatrix.csprojResolveAssemblyReference.cache
-/home/daniel/Documents/RPI/SenseHat/Posh-SenseHat/LedMatrix/obj/Debug/netcoreapp2.0/LedMatrix.csproj.CoreCompileInputs.cache
-/home/daniel/Documents/RPI/SenseHat/Posh-SenseHat/LedMatrix/obj/Debug/netcoreapp2.0/LedMatrix.AssemblyInfoInputs.cache
-/home/daniel/Documents/RPI/SenseHat/Posh-SenseHat/LedMatrix/obj/Debug/netcoreapp2.0/LedMatrix.AssemblyInfo.cs
-/home/daniel/Documents/RPI/SenseHat/Posh-SenseHat/LedMatrix/bin/Debug/netcoreapp2.0/LedMatrix.deps.json
-/home/daniel/Documents/RPI/SenseHat/Posh-SenseHat/LedMatrix/bin/Debug/netcoreapp2.0/LedMatrix.dll
-/home/daniel/Documents/RPI/SenseHat/Posh-SenseHat/LedMatrix/bin/Debug/netcoreapp2.0/LedMatrix.pdb
-/home/daniel/Documents/RPI/SenseHat/Posh-SenseHat/LedMatrix/obj/Debug/netcoreapp2.0/LedMatrix.dll
-/home/daniel/Documents/RPI/SenseHat/Posh-SenseHat/LedMatrix/obj/Debug/netcoreapp2.0/LedMatrix.pdb
